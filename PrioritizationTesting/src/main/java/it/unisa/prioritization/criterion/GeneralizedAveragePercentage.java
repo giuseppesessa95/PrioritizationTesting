@@ -1,7 +1,7 @@
 package it.unisa.prioritization.criterion;
 
-import jmetal.core.Solution;
-import jmetal.encodings.variable.Permutation;
+
+import org.uma.jmetal.solution.Solution;
 
 /**
  *
@@ -24,7 +24,7 @@ public class GeneralizedAveragePercentage {
             TF[i] = -1;
         }
 
-        int[] solutionArray = ((Permutation) solution.getDecisionVariables()[0]).vector_;
+        int[] solutionArray = ((Permutation) solution.getVariableValue(0)).vector_;     //non riesco a modificarlo
         for (int i = 0; i < mi; i++) {
             for (int j = 0; j < solutionArray.length; j++) {
                 if (coverageMatrix.getElement(solutionArray[j], i) > 0) {
