@@ -13,7 +13,8 @@ import javax.management.JMException;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.operator.Operator;
-import org.uma.jmetal.problem.Problem;
+import java.lang.String;
+import java.lang.Object;
 
 
 public class NSGASettings extends Settings
@@ -47,14 +48,14 @@ public class NSGASettings extends Settings
                 coverageFilenames.add(ConfigManager.getInputPath() + "input_diversity");
             }
             Object[] problemParams = {coverageFilenames, ConfigManager.getInputPath() + "cost_array", ConfigManager.getInputPath() + "fault_matrix"};
-            problem_ = (new ProblemFactory()).getProblem(problemName_, problemParams);
+            problem = (new ProblemFactory()).getProblem(problemName, problemParams);
             
              // Default experiments.settings
             populationSize = 250;
             maxEvaluations = 25000;
             mutationProbability = 1.0 / problem.getNumberOfVariables();
             crossoverProbability = 0.9;
-        } catch (IOException | JMException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(NSGASettings.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

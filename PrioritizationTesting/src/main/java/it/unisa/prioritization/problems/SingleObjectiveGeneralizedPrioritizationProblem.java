@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisa.prioritization.criterion.CumulativeCoverage;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.PermutationSolution;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  * Class representing a Testing Prioritization problem with any number of
@@ -17,14 +17,6 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
 
     private int[] length_;
 
-    /**
-     * Public constructor
-     *
-     * @param coverageFilenames List of files (absolute path) storing the
-     * coverage matrices
-     * @param costFilename file containing the execution cost info
-     * @param faultFilename file containing the fault coverage matrix
-     */
     public SingleObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename) {
         super(coverageFilenames, costFilename, faultFilename);
         int numberOfObjectives_ = 1;
@@ -39,10 +31,14 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
      *
      * @param solution The solution to evaluate
      */
-    public void evaluate(Solution solution) {
+    @Override
+    public void evaluate(DefaultIntegerPermutationSolution solution) {
 
-        int[] solutionArray = ((Permutation) solution.getDecisionVariables()[0]).vector_; //vedi questo come modificarlo
-
+        String solutionString = solution.getVariableValueString(0);
+        int[] solutionArray = new int[solutionString.length()];
+        for (int i = 0; i < solutionString.length(); i++) {
+            solutionArray[i] = solutionString.charAt(i);
+        }
         // let's create cumulative coverage analyzers (one analyzer for each coverage matrix)
         List<CumulativeCoverage> objectives = new ArrayList<>();
         for (int i = 0; i < this.coverageCriteria.size(); i++) {
@@ -58,11 +54,7 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
         double hyperVolume = 0;
         for (int i = 0; i < solutionArray.length; i++) {
             double previousCost = cost;
-            // save previous cumulative coverage scores
-            //List<Double> previousCoverages = new ArrayList<Double>();
-            //for (int index=0; index<this.coverageCriteria.size(); index++){
-            //	previousCoverages.add(index, coverages.get(index));
-            //}
+            
 
             cost = cost + costCriterion.getCostOfTest(solutionArray[i]);
 
@@ -106,31 +98,26 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
 
     @Override
     public int getNumberOfVariables() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 1;
     }
 
     @Override
     public int getNumberOfObjectives() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.coverageCriteria.size();
     }
 
     @Override
     public int getNumberOfConstraints() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "SingleObjectiveGeneralizedPrioritizationProblem";
     }
 
     @Override
-    public void evaluate(Object s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object createSolution() {
+    public DefaultIntegerPermutationSolution createSolution() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

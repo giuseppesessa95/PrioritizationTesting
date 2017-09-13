@@ -4,8 +4,8 @@ import it.unisa.prioritization.criterion.CoverageMatrix;
 import it.unisa.prioritization.criterion.ExecutionCostVector;
 import java.util.ArrayList;
 import java.util.List;
-import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.PermutationSolution;
+import org.uma.jmetal.problem.PermutationProblem;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  * Super class representing a Testing Prioritization problem with any number of
@@ -13,15 +13,15 @@ import org.uma.jmetal.solution.PermutationSolution;
  *
  * @author Dario Di Nucci
  */
-public abstract class GeneralizedPrioritizationProblem implements Problem{
-    
+public abstract class GeneralizedPrioritizationProblem implements PermutationProblem<DefaultIntegerPermutationSolution> {
+
     public List<CoverageMatrix> coverageCriteria = new ArrayList<>();
     public ExecutionCostVector costCriterion;
     public CoverageMatrix faultMatrix;
     private final String problemName_;
     final int numberOfVariables_;
     private final int numberOfConstraints_;
-    
+
     /**
      * Public constructor
      *
@@ -34,9 +34,8 @@ public abstract class GeneralizedPrioritizationProblem implements Problem{
         problemName_ = "GeneralizedPrioritizationProblem";
         numberOfVariables_ = 1;
         numberOfConstraints_ = 0;
-        
-        //solutionType_ = new PermutationSolutionType(this);
 
+        //solutionType_ = new PermutationSolutionType(this);
         int[] length_ = new int[numberOfVariables_];
 
         // load all coverage matrices
@@ -59,6 +58,9 @@ public abstract class GeneralizedPrioritizationProblem implements Problem{
         length_[0] = costCriterion.size();
     }
 
-  
-    
+    @Override
+    public int getPermutationLength() {
+        return coverageCriteria.size();
+    }
+
 }

@@ -1,51 +1,49 @@
 package it.unisa.prioritization.criterion;
 
-
-import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  *
  * @author dardin88
  */
 public class GeneralizedAveragePercentage {
-
-    public static double calculate(Solution solution, CoverageMatrix coverageMatrix, ExecutionCostVector costVector, boolean compacted) {
+    
+    public static double calculate(DefaultIntegerPermutationSolution solution, CoverageMatrix coverageMatrix, ExecutionCostVector costVector, boolean compacted) {
         double AFDPC = 0;
         int mi = coverageMatrix.numberOfTargets();
         int m = coverageMatrix.numberOfOriginalTargets();
         int n = coverageMatrix.numberOfTests();
         int[] TF = new int[mi];
-
+        
         if (m == 0) {
             m = mi;
         }
-
+        
         for (int i = 0; i < TF.length; i++) {
             TF[i] = -1;
         }
-
-        int[] solutionArray = ((Permutation) solution.getVariableValue(0)).vector_;     //non riesco a modificarlo
+        
         for (int i = 0; i < mi; i++) {
-            for (int j = 0; j < solutionArray.length; j++) {
-                if (coverageMatrix.getElement(solutionArray[j], i) > 0) {
+            for (int j = 0; j < n; j++) {
+                if (coverageMatrix.getElement(solution.getVariableValue(j), i) > 0) {
                     TF[i] = j;
                     break;
                 }
             }
         }
-
+        
         for (int i = 0; i < mi; i++) {
             double sum = 0;
             if (TF[i] == -1) {
                 continue;
             }
             for (int j = TF[i]; j < n; j++) {
-                sum += costVector.getCostOfTest(solutionArray[j]);
+                sum += costVector.getCostOfTest(solution.getVariableValue(j));
             }
-            sum = sum - (1d / 2d * costVector.getCostOfTest(solutionArray[TF[i]]));
-
+            sum = sum - (1d / 2d * costVector.getCostOfTest(solution.getVariableValue(TF[i])));
+            
             if (compacted) {
-                int ci = coverageMatrix.getElement(solutionArray[TF[i]], i);
+                int ci = coverageMatrix.getElement(solution.getVariableValue(TF[i]), i);
                 AFDPC += ci * sum;
             } else {
                 AFDPC += sum;

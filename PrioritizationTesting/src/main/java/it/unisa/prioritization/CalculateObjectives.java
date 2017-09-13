@@ -15,8 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.management.JMException;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.solution.PermutationSolution;
-import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  *
@@ -65,77 +64,25 @@ public class CalculateObjectives {
         try (FileReader fr = new FileReader(solutionFile)) {
             BufferedReader br = new BufferedReader(fr);
             FileWriter fw = new FileWriter(outputFile);
-            try (BufferedWriter bw = new BufferedWriter(fw)) {
-                String solutionLine;
-                while ((solutionLine = br.readLine()) != null) {
-                    StringTokenizer st = new StringTokenizer(solutionLine, " ");
-                    int i = 0;
-                    Solution solution = new Solution(problem) {
-                        @Override
-                        public void setObjective(int i, double d) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
+            BufferedWriter bw = new BufferedWriter(fw);
+            String solutionLine;
+            while ((solutionLine = br.readLine()) != null) {
+                StringTokenizer st = new StringTokenizer(solutionLine, " ");
+                int i = 0;
+                DefaultIntegerPermutationSolution solution = new DefaultIntegerPermutationSolution(problem);
 
-                        @Override
-                        public double getObjective(int i) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public Object getVariableValue(int i) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public void setVariableValue(int i, Object t) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public String getVariableValueString(int i) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public int getNumberOfVariables() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public int getNumberOfObjectives() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public Solution copy() {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public void setAttribute(Object o, Object o1) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-
-                        @Override
-                        public Object getAttribute(Object o) {
-                            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                        }
-                    };
-                    
-                    while (st.hasMoreTokens()) {
-                        ((Permutation) solution.getDecisionVariables()[0]).vector_[i] = Integer.parseInt(st.nextToken());
-                        i++;
-                    }
-                    problem.evaluate(solution);
-                    String outputString = "";
-                    for (i = 0; i < solution.getNumberOfObjectives(); i++) {
-                        outputString += solution.getObjective(i) + " ";
-                    }
-                    bw.write(outputString + "\n");
+                while (st.hasMoreTokens()) {
+                    solution.setVariableValue(i, Integer.parseInt(st.nextToken()));
+                    i++;
                 }
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(CalculateObjectives.class.getName()).log(Level.SEVERE, null, ex);
+                problem.evaluate(solution);
+                String outputString = "";
+                for (i = 0; i < solution.getNumberOfObjectives(); i++) {
+                    outputString += solution.getObjective(i) + " ";
+                }
+                bw.write(outputString + "\n");
             }
+
         }
     }
 

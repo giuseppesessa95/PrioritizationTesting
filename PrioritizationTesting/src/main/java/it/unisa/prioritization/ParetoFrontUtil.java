@@ -14,7 +14,7 @@ import org.uma.jmetal.problem.PermutationProblem;
 import org.uma.jmetal.solution.SolutionBuilder.Variable;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.comparator.DominanceComparator;
-import jmetal.core.SolutionSet;
+import jmetal.core.SolutionSet; // modificare in jMetal 5
 /**
  *
  * @author dardin88
@@ -97,15 +97,11 @@ public class ParetoFrontUtil {
 
     public SolutionSet initFront(Solution solution, GeneralizedPrioritizationProblem problem) {
         SolutionSet paretoFront = new SolutionSet(10000000);
-        try {
-            SolutionSet solutionPoints = this.splitSolutionPointByPoint(solution, problem);
-            for (int i = 0; i < solutionPoints.size(); i++) {
-                Solution solutionPoint = solutionPoints.get(i);
-                problem.evaluate(solutionPoint);
-                paretoFront.add(solutionPoint);
-            }
-        } catch (JMException ex) {
-            Logger.getLogger(ParetoFrontUtil.class.getName()).log(Level.SEVERE, null, ex);
+        SolutionSet solutionPoints = this.splitSolutionPointByPoint(solution, problem);
+        for (int i = 0; i < solutionPoints.size(); i++) {
+            Solution solutionPoint = solutionPoints.get(i);
+            problem.evaluate(solutionPoint);
+            paretoFront.add(solutionPoint);
         }
         return paretoFront;
     }

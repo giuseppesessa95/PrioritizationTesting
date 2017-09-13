@@ -2,8 +2,9 @@ package it.unisa.prioritization.problems;
 
 import it.unisa.prioritization.criterion.GeneralizedAveragePercentage;
 import java.util.List;
-
+import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  * Class representing a Testing Prioritization problem with any number of
@@ -33,13 +34,28 @@ public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedP
         double[] upperLimit_ = new double[this.length_[0]];
     }
 
-    /**
-     * Evaluates a solution
-     *
-     * @param solution The solution to evaluate
-     */
-    public void evaluate(Solution solution) {
+    @Override
+    public int getNumberOfVariables() {
+       return 1;
+    }
 
+    @Override
+    public int getNumberOfObjectives() {
+        return this.coverageCriteria.size();
+    }
+
+    @Override
+    public int getNumberOfConstraints() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return "MultiObjectiveGeneralizedPrioritizationProblem";
+    }
+
+    @Override
+    public void evaluate(DefaultIntegerPermutationSolution solution) {
         for (int i = 0; i < this.coverageCriteria.size(); i++) {
             //Coverage criteria are set in order to be maximized
             double criteriaAveragePercentage = GeneralizedAveragePercentage.calculate(solution, this.coverageCriteria.get(i), this.costCriterion, true);
@@ -48,33 +64,8 @@ public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedP
     }
 
     @Override
-    public int getNumberOfVariables() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getNumberOfObjectives() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getNumberOfConstraints() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void evaluate(Object s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object createSolution() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public DefaultIntegerPermutationSolution createSolution() {
+        return new DefaultIntegerPermutationSolution(this);
     }
 
 }
