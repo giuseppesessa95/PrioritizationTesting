@@ -1,8 +1,8 @@
 
 package it.unisa.prioritization.study;
 
-import it.unisa.prioritization.problems.GeneralizedPrioritizationProblem;
-import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
+import it.unisa.prioritization.algorithm.NSGASettings;
+import it.unisa.prioritization.problems.MultiObjectiveGeneralizedPrioritizationProblem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +18,6 @@ import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
 import org.uma.jmetal.qualityindicator.impl.Spread;
 import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.solution.DoubleSolution;
-import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.ExperimentBuilder;
@@ -31,17 +30,12 @@ import org.uma.jmetal.util.experiment.component.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
-/**
- *
- * @author Administrator
- */
-public class TestingPrioritizationStudy 
+
+public class TestingPrioritizationStudyII 
 {
     private static final int INDEPENDENT_RUNS = 25;
     
-
-    
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args) throws IOException 
     {
         if (args.length != 1) 
         {
@@ -49,42 +43,12 @@ public class TestingPrioritizationStudy
         }
         String experimentBaseDirectory = args[0];
         List<ExperimentProblem<DoubleSolution>> problemList = new ArrayList<>();
-        List<String> coverageFilenames = new ArrayList<>();
-        problemList.add(new ExperimentProblem<>(new SingleObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename)));
-        problemList.add(new ExperimentProblem<>(new GeneralizedPrioritizationProblem() {
-            @Override
-            public int getNumberOfVariables() {
-                return 1;
-            }
-
-            @Override
-            public int getNumberOfObjectives() {
-                return this.coverageCriteria.size();
-            }
-
-            @Override
-            public int getNumberOfConstraints() {
-                return  0;
-            }
-
-            @Override
-            public String getName() {
-                return "GeneralizedPrioritizationProblem";
-            }
-
-            @Override
-            public void evaluate(DefaultIntegerPermutationSolution arg0) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public DefaultIntegerPermutationSolution createSolution() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        }));
+        problemList.add(new ExperimentProblem<>(new NSGASettings()));
+        problemList.add(new ExperimentProblem<>(new MultiObjectiveGeneralizedPrioritizationProblem(coverageFilenames, experimentBaseDirectory, experimentBaseDirectory)))
         List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList = configureAlgorithmList(problemList);
-        List<String> referenceFrontFileNames = Arrays.asList("SingleObjectiveGeneralizedPrioritizationProblem.pf");
-        Experiment<DoubleSolution, List<DoubleSolution>> experiment = new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("NSGAIIStudy")
+        List<String> referenceFrontFileNames = Arrays.asList("NSGASettings.pf");
+        Experiment<DoubleSolution, List<DoubleSolution>> experiment =
+            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("NSGAIIStudy")
                     .setAlgorithmList(algorithmList)
                     .setProblemList(problemList)
                     .setExperimentBaseDirectory(experimentBaseDirectory)
@@ -103,17 +67,16 @@ public class TestingPrioritizationStudy
                     .setNumberOfCores(8)
                     .build();
         new ExecuteAlgorithms<>(experiment).run();
-    new ComputeQualityIndicators<>(experiment).run();
-    new GenerateLatexTablesWithStatistics(experiment).run();
-    new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-    new GenerateFriedmanTestTables<>(experiment).run();
-    new GenerateBoxplotsWithR<>(experiment).setRows(3).setColumns(3).run();
-    
-    }
+        new ComputeQualityIndicators<>(experiment).run();
+        new GenerateLatexTablesWithStatistics(experiment).run();
+        new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+        new GenerateFriedmanTestTables<>(experiment).run();
+        new GenerateBoxplotsWithR<>(experiment).setRows(3).setColumns(3).run();
+        
+        static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
+          List<ExperimentProblem<DoubleSolution>> problemList) {
+    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
 
-    private static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(List<ExperimentProblem<DoubleSolution>> problemList) 
-    {
-        List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
         for (int i = 0; i < problemList.size(); i++) 
         {
             Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<>(
