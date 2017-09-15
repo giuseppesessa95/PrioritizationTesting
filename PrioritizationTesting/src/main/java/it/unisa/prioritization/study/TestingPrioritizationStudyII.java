@@ -46,7 +46,7 @@ public class TestingPrioritizationStudyII
         problemList.add(new ExperimentProblem<>(new NSGASettings()));
         problemList.add(new ExperimentProblem<>(new MultiObjectiveGeneralizedPrioritizationProblem(coverageFilenames, experimentBaseDirectory, experimentBaseDirectory)))
         List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList = configureAlgorithmList(problemList);
-        List<String> referenceFrontFileNames = Arrays.asList("NSGASettings.pf");
+        List<String> referenceFrontFileNames = Arrays.asList("NSGASettings.pf","MultiObjectiveGeneralizedPrioritizationProblemMultiObjectiveGeneralizedPrioritizationProblem.pf");
         Experiment<DoubleSolution, List<DoubleSolution>> experiment =
             new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("NSGAIIStudy")
                     .setAlgorithmList(algorithmList)

@@ -59,6 +59,11 @@ public class NSGASettings extends Settings
             Logger.getLogger(NSGASettings.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public NSGASettings() 
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public Algorithm configure() throws JMException {
         Algorithm algorithm;

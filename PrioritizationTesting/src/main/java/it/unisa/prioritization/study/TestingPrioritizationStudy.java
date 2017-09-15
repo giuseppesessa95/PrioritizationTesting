@@ -83,7 +83,7 @@ public class TestingPrioritizationStudy
             }
         }));
         List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList = configureAlgorithmList(problemList);
-        List<String> referenceFrontFileNames = Arrays.asList("SingleObjectiveGeneralizedPrioritizationProblem.pf");
+        List<String> referenceFrontFileNames = Arrays.asList("SingleObjectiveGeneralizedPrioritizationProblem.pf","GeneralizedPrioritizationProblem.pf");
         Experiment<DoubleSolution, List<DoubleSolution>> experiment = new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("NSGAIIStudy")
                     .setAlgorithmList(algorithmList)
                     .setProblemList(problemList)
