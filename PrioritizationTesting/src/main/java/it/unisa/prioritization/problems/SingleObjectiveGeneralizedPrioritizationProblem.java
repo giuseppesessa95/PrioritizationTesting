@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisa.prioritization.criterion.CumulativeCoverage;
-import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
@@ -15,13 +14,8 @@ import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
  */
 public class SingleObjectiveGeneralizedPrioritizationProblem extends GeneralizedPrioritizationProblem {
 
-    private int[] length_;
-
     public SingleObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename) {
         super(coverageFilenames, costFilename, faultFilename);
-        int numberOfObjectives_ = 1;
-        double[] lowerLimit_ = new double[this.length_[0]];
-        double[] upperLimit_ = new double[this.length_[0]];
     }
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +25,6 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
      *
      * @param solution The solution to evaluate
      */
-    @Override
     public void evaluate(DefaultIntegerPermutationSolution solution) {
 
         String solutionString = solution.getVariableValueString(0);
@@ -54,7 +47,6 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
         double hyperVolume = 0;
         for (int i = 0; i < solutionArray.length; i++) {
             double previousCost = cost;
-            
 
             cost = cost + costCriterion.getCostOfTest(solutionArray[i]);
 
@@ -118,7 +110,7 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
 
     @Override
     public DefaultIntegerPermutationSolution createSolution() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new DefaultIntegerPermutationSolution(this);
     }
 
 }

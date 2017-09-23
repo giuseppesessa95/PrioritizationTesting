@@ -1,5 +1,5 @@
-
 package it.unisa.prioritization.algorithm;
+
 import it.unisa.prioritization.ConfigManager;
 import com.sun.scenario.Settings;
 import java.io.IOException;
@@ -16,19 +16,17 @@ import org.uma.jmetal.operator.Operator;
 import java.lang.String;
 import java.lang.Object;
 
+public class NSGASettings extends Settings {
 
-public class NSGASettings extends Settings
-{
     public int populationSize;
     public int maxEvaluations;
-    
+
     public double mutationProbability;
     public double crossoverProbability;
-    
-    public NSGASettings(String problem)
-    {
+
+    public NSGASettings(String problem) {
         super(problem);
-        
+
         try {
             List<String> coverageFilenames = new LinkedList<>();
             String objectives = ConfigManager.getObjectives();
@@ -49,8 +47,8 @@ public class NSGASettings extends Settings
             }
             Object[] problemParams = {coverageFilenames, ConfigManager.getInputPath() + "cost_array", ConfigManager.getInputPath() + "fault_matrix"};
             problem = (new ProblemFactory()).getProblem(problemName, problemParams);
-            
-             // Default experiments.settings
+
+            // Default experiments.settings
             populationSize = 250;
             maxEvaluations = 25000;
             mutationProbability = 1.0 / problem.getNumberOfVariables();
@@ -60,11 +58,10 @@ public class NSGASettings extends Settings
         }
     }
 
-    public NSGASettings() 
-    {
+    public NSGASettings() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public Algorithm configure() throws JMException {
         Algorithm algorithm;
         Operator selection;
@@ -138,5 +135,5 @@ public class NSGASettings extends Settings
 
         return algorithm;
     }
-    
+
 }

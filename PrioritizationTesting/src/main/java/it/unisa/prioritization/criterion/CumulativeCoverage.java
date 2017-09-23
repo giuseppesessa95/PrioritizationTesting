@@ -29,10 +29,10 @@ public class CumulativeCoverage {
 
         return cumulativeCoverage;
     }
-    
-    public CumulativeCoverage copy(){
+
+    public CumulativeCoverage copy() {
         CumulativeCoverage copy = new CumulativeCoverage(this.cov);
-        
+
         int cumulativeCoverage = 0;
         for (int j = 0; j < cov.numberOfTargets(); j++) {
             copy.binaryCoverage[j] = binaryCoverage[j];

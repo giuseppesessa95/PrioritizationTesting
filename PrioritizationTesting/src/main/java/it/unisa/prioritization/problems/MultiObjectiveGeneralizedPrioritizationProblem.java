@@ -2,8 +2,6 @@ package it.unisa.prioritization.problems;
 
 import it.unisa.prioritization.criterion.GeneralizedAveragePercentage;
 import java.util.List;
-import org.uma.jmetal.solution.PermutationSolution;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
@@ -13,8 +11,6 @@ import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
  * @author Dario Di Nucci
  */
 public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedPrioritizationProblem {
-
-    private int[] length_;
 
     /**
      * Public constructor
@@ -26,17 +22,11 @@ public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedP
      */
     public MultiObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename) {
         super(coverageFilenames, costFilename, faultFilename);
-        int numberOfVariables_ = 1;
-        //Objectives are given by coverage matrices and cost array
-        int numberOfObjectives_ = this.coverageCriteria.size();
-        int numberOfConstraints_ = 0;
-        double[] lowerLimit_ = new double[this.length_[0]];
-        double[] upperLimit_ = new double[this.length_[0]];
     }
 
     @Override
     public int getNumberOfVariables() {
-       return 1;
+        return 1;
     }
 
     @Override
@@ -54,7 +44,6 @@ public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedP
         return "MultiObjectiveGeneralizedPrioritizationProblem";
     }
 
-    @Override
     public void evaluate(DefaultIntegerPermutationSolution solution) {
         for (int i = 0; i < this.coverageCriteria.size(); i++) {
             //Coverage criteria are set in order to be maximized

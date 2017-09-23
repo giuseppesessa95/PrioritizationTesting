@@ -1,4 +1,3 @@
-
 package it.unisa.prioritization.algorithm;
 
 import com.sun.org.apache.xml.internal.security.algorithms.Algorithm;
@@ -11,41 +10,36 @@ import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.SolutionBuilder.Variable;
 
+public class AdditionalGreedyPrioritization extends Algorithm {
 
-public class AdditionalGreedyPrioritization extends Algorithm
-{
     private static final long serialVersionUID = 1L;
-    
+
     private final SingleObjectiveGeneralizedPrioritizationProblem realProblem;
     private List<CumulativeCoverage> cumulativeCoverages;
     private List<Integer> coverages;
     private final int length;
     private final int numberOfCoverageCriterion;
     private List<Integer> usedValues;
-    
-    public AdditionalGreedy(Problem problem) 
-    {
+
+    public AdditionalGreedyPrioritization(Problem problem) {
         super(problem);
         this.realProblem = (SingleObjectiveGeneralizedPrioritizationProblem) this.problem_;
         this.length = realProblem.costCriterion.size();
         this.numberOfCoverageCriterion = realProblem.coverageCriteria.size();
     }
-    
-    public SolutionSet execute() throws JMException, ClassNotFoundException 
-    {
+
+    public SolutionSet execute() throws JMException, ClassNotFoundException {
         NonDominatedSolutionList ndl = new NonDominatedSolutionList();
 
         this.cumulativeCoverages = new ArrayList<>();
         this.coverages = new ArrayList<>();
         this.usedValues = new ArrayList<>();
 
-        for (int i = 0; i < this.numberOfCoverageCriterion; i++) 
-        {
+        for (int i = 0; i < this.numberOfCoverageCriterion; i++) {
             this.cumulativeCoverages.add(new CumulativeCoverage(this.realProblem.coverageCriteria.get(i)));
         }
 
-        for (int i = 0; i < this.numberOfCoverageCriterion; i++) 
-        {
+        for (int i = 0; i < this.numberOfCoverageCriterion; i++) {
             this.coverages.add(i, 0);
         }
 
@@ -54,8 +48,7 @@ public class AdditionalGreedyPrioritization extends Algorithm
 
         int step = 0;
 
-        while (step < this.length) 
-        {
+        while (step < this.length) {
             boolean isMaximum = true;
             variable.vector_[step] = this.getGreedyStep(variable, step, this.coverages);
             System.out.println("Greedy algorithm step: " + (step));
@@ -79,8 +72,7 @@ public class AdditionalGreedyPrioritization extends Algorithm
         return ndl;
     }
 
-    private int getGreedyStep(Permutation variable, int step, List<Integer> previousCoverages) 
-    {
+    private int getGreedyStep(Permutation variable, int step, List<Integer> previousCoverages) {
         double maxim = 0;
         int bestStep = 0;
 
@@ -112,8 +104,7 @@ public class AdditionalGreedyPrioritization extends Algorithm
             }
         }
         // let's update the cumulative coverage scores
-        for (int index = 0; index < this.numberOfCoverageCriterion; index++) 
-        {
+        for (int index = 0; index < this.numberOfCoverageCriterion; index++) {
             int coverage = this.cumulativeCoverages.get(index).updateCoverage(bestStep);
             this.coverages.set(index, coverage);
         }

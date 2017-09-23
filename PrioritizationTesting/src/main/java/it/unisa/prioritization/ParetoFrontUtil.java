@@ -15,6 +15,7 @@ import org.uma.jmetal.solution.SolutionBuilder.Variable;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.comparator.DominanceComparator;
 import jmetal.core.SolutionSet; // modificare in jMetal 5
+
 /**
  *
  * @author dardin88
@@ -29,7 +30,7 @@ public class ParetoFrontUtil {
         int[] points = new int[3];
 
         SolutionSet paretoFront = initFront(gde3Solutions.get(0), problem);
-        
+
         for (int i = 1; i < gde3Solutions.size(); i++) {
             paretoFront = computeCurrentSolution(gde3Solutions.get(i), paretoFront, problem);
             System.out.println("GDE3 " + i);
@@ -120,7 +121,7 @@ public class ParetoFrontUtil {
                     Solution paretoFrontPoint = paretoFront.get(j);
                     Permutation currentParetoPermutation = (Permutation) paretoFrontPoint.getDecisionVariables()[0];
                     if (!Arrays.equals(currentSolutionPermutation.vector_, currentParetoPermutation.vector_)) {
-                        
+
                         problem.evaluate(solutionPoint);
                         int compareResult = comparator.compare(solutionPoint, paretoFrontPoint);
                         if (compareResult == -1) {

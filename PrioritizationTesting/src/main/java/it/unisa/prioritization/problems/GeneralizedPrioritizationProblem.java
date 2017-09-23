@@ -5,7 +5,7 @@ import it.unisa.prioritization.criterion.ExecutionCostVector;
 import java.util.ArrayList;
 import java.util.List;
 import org.uma.jmetal.problem.PermutationProblem;
-import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
+import org.uma.jmetal.solution.PermutationSolution;
 
 /**
  * Super class representing a Testing Prioritization problem with any number of
@@ -13,7 +13,7 @@ import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
  *
  * @author Dario Di Nucci
  */
-public abstract class GeneralizedPrioritizationProblem implements PermutationProblem<DefaultIntegerPermutationSolution> {
+public abstract class GeneralizedPrioritizationProblem implements PermutationProblem<PermutationSolution<Integer>> {
 
     public List<CoverageMatrix> coverageCriteria = new ArrayList<>();
     public ExecutionCostVector costCriterion;
@@ -35,9 +35,6 @@ public abstract class GeneralizedPrioritizationProblem implements PermutationPro
         numberOfVariables_ = 1;
         numberOfConstraints_ = 0;
 
-        //solutionType_ = new PermutationSolutionType(this);
-        int[] length_ = new int[numberOfVariables_];
-
         // load all coverage matrices
         for (String filename : coverageFilenames) {
             CoverageMatrix cov;
@@ -53,9 +50,6 @@ public abstract class GeneralizedPrioritizationProblem implements PermutationPro
         // past fault matrix must not be compacted beacuse it is used for computing APFDc
         faultMatrix = new CoverageMatrix(faultFilename, false);
         System.out.println("Read " + faultMatrix.getSize() + " elements from the coverage matrix '" + faultFilename + "'");
-
-        // set the length of the chromosome
-        length_[0] = costCriterion.size();
     }
 
     @Override

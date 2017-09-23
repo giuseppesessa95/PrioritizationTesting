@@ -13,65 +13,64 @@ import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 
 /**
  * This class encapsulate the execution cost of test cases
- * 
+ *
  * @author Annibale Panichella
  */
 public class ExecutionCostVector {
-	
-	public DoubleMatrix1D costArray_;
-	
-	public ExecutionCostVector(String costFilename){
-		try {
-			costArray_ = readCostData(costFilename);
-		} catch (IOException e) {
-			Logger.getLogger(ExecutionCostVector.class.getName())
-                                .log(Level.SEVERE, "Problem when creating the cost "
-					+ "vector for the file "+costFilename, e);
-		}
-	}
-	
-	public double getMaxCost(){
-		return this.costArray_.zSum();
-	}
-	
-	public double getCostOfTest(int index){
-		return costArray_.get(index);
-	}
-	
-	public int size(){
-		return costArray_.size();
-	}
-        
-	protected final DoubleMatrix1D readCostData(String costFilename) throws IOException {
-		if (costFilename == null) {
-			throw new IllegalArgumentException();
-		}
 
-		BufferedReader costBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(costFilename)));
-		int row = 0;
-		String line;
-		while ((line = costBufferedReader.readLine()) != null) {
-			row++;
-		}
-		costBufferedReader.close();
+    public DoubleMatrix1D costArray_;
 
-		double[] costArray = new double[row];
+    public ExecutionCostVector(String costFilename) {
+        try {
+            costArray_ = readCostData(costFilename);
+        } catch (IOException e) {
+            Logger.getLogger(ExecutionCostVector.class.getName())
+                    .log(Level.SEVERE, "Problem when creating the cost "
+                            + "vector for the file " + costFilename, e);
+        }
+    }
 
-		costBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(costFilename)));
+    public double getMaxCost() {
+        return this.costArray_.zSum();
+    }
 
-		row = 0;
-		while ((line = costBufferedReader.readLine()) != null) {
-			StringTokenizer st = new StringTokenizer(line, "");
+    public double getCostOfTest(int index) {
+        return costArray_.get(index);
+    }
 
-			while (st.hasMoreTokens()) {
-				costArray[row] = Double.valueOf(st.nextToken()).longValue();
-			}
-			row++;
-		}
+    public int size() {
+        return costArray_.size();
+    }
 
-		DenseDoubleMatrix1D denseConstArray = new DenseDoubleMatrix1D(costArray);
-		return denseConstArray;
-	}
+    protected final DoubleMatrix1D readCostData(String costFilename) throws IOException {
+        if (costFilename == null) {
+            throw new IllegalArgumentException();
+        }
 
+        BufferedReader costBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(costFilename)));
+        int row = 0;
+        String line;
+        while ((line = costBufferedReader.readLine()) != null) {
+            row++;
+        }
+        costBufferedReader.close();
+
+        double[] costArray = new double[row];
+
+        costBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(costFilename)));
+
+        row = 0;
+        while ((line = costBufferedReader.readLine()) != null) {
+            StringTokenizer st = new StringTokenizer(line, "");
+
+            while (st.hasMoreTokens()) {
+                costArray[row] = Double.valueOf(st.nextToken()).longValue();
+            }
+            row++;
+        }
+
+        DenseDoubleMatrix1D denseConstArray = new DenseDoubleMatrix1D(costArray);
+        return denseConstArray;
+    }
 
 }

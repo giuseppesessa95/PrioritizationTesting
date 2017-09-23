@@ -7,22 +7,22 @@ import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
  * @author dardin88
  */
 public class GeneralizedAveragePercentage {
-    
+
     public static double calculate(DefaultIntegerPermutationSolution solution, CoverageMatrix coverageMatrix, ExecutionCostVector costVector, boolean compacted) {
         double AFDPC = 0;
         int mi = coverageMatrix.numberOfTargets();
         int m = coverageMatrix.numberOfOriginalTargets();
         int n = coverageMatrix.numberOfTests();
         int[] TF = new int[mi];
-        
+
         if (m == 0) {
             m = mi;
         }
-        
+
         for (int i = 0; i < TF.length; i++) {
             TF[i] = -1;
         }
-        
+
         for (int i = 0; i < mi; i++) {
             for (int j = 0; j < n; j++) {
                 if (coverageMatrix.getElement(solution.getVariableValue(j), i) > 0) {
@@ -31,7 +31,7 @@ public class GeneralizedAveragePercentage {
                 }
             }
         }
-        
+
         for (int i = 0; i < mi; i++) {
             double sum = 0;
             if (TF[i] == -1) {
@@ -41,7 +41,7 @@ public class GeneralizedAveragePercentage {
                 sum += costVector.getCostOfTest(solution.getVariableValue(j));
             }
             sum = sum - (1d / 2d * costVector.getCostOfTest(solution.getVariableValue(TF[i])));
-            
+
             if (compacted) {
                 int ci = coverageMatrix.getElement(solution.getVariableValue(TF[i]), i);
                 AFDPC += ci * sum;
