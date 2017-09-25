@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unisa.prioritization.criterion.CumulativeCoverage;
+import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
@@ -25,7 +26,8 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
      *
      * @param solution The solution to evaluate
      */
-    public void evaluate(DefaultIntegerPermutationSolution solution) {
+    @Override
+    public void evaluate(PermutationSolution<Integer> solution) {
 
         String solutionString = solution.getVariableValueString(0);
         int[] solutionArray = new int[solutionString.length()];

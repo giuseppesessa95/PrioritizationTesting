@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jmetal.core.Solution;
-import jmetal.encodings.variable.Permutation;
+import org.uma.jmetal.solution.PermutationSolution;
 import it.unisa.prioritization.criterion.GeneralizedAveragePercentage;
 import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  *
@@ -34,8 +34,12 @@ public class APFDcTest4 {
     @Test
     public void testPermutation1() throws ClassNotFoundException {
         try {
-            Solution solution = new Solution(problem);
-            ((Permutation) solution.getDecisionVariables()[0]).vector_ = this.readSolution("io/test/APFDc/printtokens_test/solution_points");
+            PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
+            int A[] = this.readSolution("io/test/APFDc/printtokens_test/solution_points");
+            for(int i=0; i<A.length; i++)
+            {
+                solution.setVariableValue(i, A[i]);
+            }
             double value = GeneralizedAveragePercentage.calculate(solution, problem.faultMatrix, problem.costCriterion, false);
             assertEquals(0.03, value, 0.01);
         } catch (IOException ex) {

@@ -2,6 +2,7 @@ package it.unisa.prioritization.problems;
 
 import it.unisa.prioritization.criterion.GeneralizedAveragePercentage;
 import java.util.List;
+import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
@@ -44,7 +45,8 @@ public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedP
         return "MultiObjectiveGeneralizedPrioritizationProblem";
     }
 
-    public void evaluate(DefaultIntegerPermutationSolution solution) {
+    @Override
+    public void evaluate(PermutationSolution<Integer> solution) {
         for (int i = 0; i < this.coverageCriteria.size(); i++) {
             //Coverage criteria are set in order to be maximized
             double criteriaAveragePercentage = GeneralizedAveragePercentage.calculate(solution, this.coverageCriteria.get(i), this.costCriterion, true);

@@ -1,5 +1,6 @@
 package it.unisa.prioritization.criterion;
 
+import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
@@ -8,7 +9,7 @@ import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
  */
 public class GeneralizedAveragePercentage {
 
-    public static double calculate(DefaultIntegerPermutationSolution solution, CoverageMatrix coverageMatrix, ExecutionCostVector costVector, boolean compacted) {
+    public static double calculate(PermutationSolution<Integer> solution, CoverageMatrix coverageMatrix, ExecutionCostVector costVector, boolean compacted) {
         double AFDPC = 0;
         int mi = coverageMatrix.numberOfTargets();
         int m = coverageMatrix.numberOfOriginalTargets();

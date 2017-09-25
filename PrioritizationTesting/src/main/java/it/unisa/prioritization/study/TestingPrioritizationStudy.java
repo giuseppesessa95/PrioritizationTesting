@@ -51,7 +51,7 @@ public class TestingPrioritizationStudy {
 
         List<String> referenceFrontFileNames = Arrays.asList("SingleObjectiveGeneralizedPrioritizationProblem.pf");
 
-        Experiment<DefaultIntegerPermutationSolution, List<PermutationSolution>> experiment = new ExperimentBuilder<PermutationSolution<Integer>, List<PermutationSolution>>("NSGAIIStudy")
+        Experiment<DefaultIntegerPermutationSolution, List<PermutationSolution<Integer>>> experiment = new ExperimentBuilder<PermutationSolution<Integer>, List<PermutationSolution<Integer>>>("NSGAIIStudy")
                 .setAlgorithmList(algorithmList)
                 .setProblemList(problemList)
                 .setExperimentBaseDirectory(experimentBaseDirectory)
@@ -78,13 +78,13 @@ public class TestingPrioritizationStudy {
 
     }
 
-    static List<ExperimentAlgorithm<PermutationSolution<Integer>, List<PermutationSolution>>> configureAlgorithmList(
+    static List<ExperimentAlgorithm<PermutationSolution<Integer>, List<PermutationSolution<Integer>>>> configureAlgorithmList(
             List<ExperimentProblem<PermutationSolution<Integer>>> problemList) {
         
-        List<ExperimentAlgorithm<PermutationSolution, List<PermutationSolution>>> algorithms = new ArrayList<>();
+        List<ExperimentAlgorithm<PermutationSolution<Integer>, List<PermutationSolution<Integer>>>> algorithms = new ArrayList<>();
 
         for (int i = 0; i < problemList.size(); i++) {
-            Algorithm<List<PermutationSolution>> algorithm = new NSGAIIBuilder<>(
+            Algorithm<List<PermutationSolution<Integer>>> algorithm = new NSGAIIBuilder<>(
                     problemList.get(0).getProblem(),
                     new PMXCrossover(0.9),
                     new PermutationSwapMutation<>(1.0 / problemList.get(0).getProblem().getNumberOfVariables()))

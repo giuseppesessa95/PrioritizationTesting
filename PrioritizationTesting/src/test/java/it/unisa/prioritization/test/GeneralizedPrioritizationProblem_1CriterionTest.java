@@ -1,16 +1,14 @@
 package it.unisa.prioritization.test;
 
 import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
-import jmetal.core.Solution;
-import jmetal.encodings.variable.Permutation;
+import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.PermutationSolution;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 public class GeneralizedPrioritizationProblem_1CriterionTest{
 
@@ -25,12 +23,11 @@ public class GeneralizedPrioritizationProblem_1CriterionTest{
 
 	@Test
 	public void testPermutation1() throws ClassNotFoundException {
-		Solution solution = new Solution(problem);
-		((Permutation) solution.getDecisionVariables()[0]).vector_[0]=0;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[1]=1;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[2]=2;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[3]=3;
-
+                PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
+                solution.setVariableValue(0, 0);
+                solution.setVariableValue(1, 1);
+                solution.setVariableValue(2, 2);
+                solution.setVariableValue(3, 3);
 		problem.evaluate(solution);
 
 		double actualHypervolume =  solution.getObjective(0);
@@ -40,13 +37,13 @@ public class GeneralizedPrioritizationProblem_1CriterionTest{
 
 	@Test
 	public void testPermutation2() throws ClassNotFoundException {
-		Solution solution = new Solution(problem);
-
-		((Permutation) solution.getDecisionVariables()[0]).vector_[0]=2;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[1]=3;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[2]=0;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[3]=1;
-
+            
+                PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
+                solution.setVariableValue(0, 2);
+                solution.setVariableValue(1, 3);
+                solution.setVariableValue(2, 0);
+                solution.setVariableValue(3, 1);
+		
 		problem.evaluate(solution);
 
 		double actualHypervolume =  solution.getObjective(0);
@@ -56,13 +53,12 @@ public class GeneralizedPrioritizationProblem_1CriterionTest{
 
 	@Test
 	public void testPermutation3() throws ClassNotFoundException {
-		Solution solution = new Solution(problem);
-
-		((Permutation) solution.getDecisionVariables()[0]).vector_[0]=2;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[1]=3;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[2]=1;
-		((Permutation) solution.getDecisionVariables()[0]).vector_[3]=0;
-
+            
+                PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
+                solution.setVariableValue(0, 2);
+                solution.setVariableValue(1, 3);
+                solution.setVariableValue(2, 1);
+                solution.setVariableValue(3, 0);
 		problem.evaluate(solution);
 
 		double actualHypervolume =  solution.getObjective(0);

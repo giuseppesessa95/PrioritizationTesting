@@ -4,10 +4,10 @@ import it.unisa.prioritization.problems.MultiObjectiveGeneralizedPrioritizationP
 import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
 import java.util.ArrayList;
 import java.util.List;
-import jmetal.core.Solution;
-import jmetal.encodings.variable.Permutation;
+import org.uma.jmetal.solution.PermutationSolution;
 import org.junit.Before;
 import org.junit.Test;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  *
@@ -26,10 +26,11 @@ public class Evaluations_2CriterionTest {
     @Test
     public void testSingleObjectiveProblem() throws ClassNotFoundException {
         SingleObjectiveGeneralizedPrioritizationProblem problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/grep/cost_array.csv", "io/test/grep/fault_matrix.csv");
-        Solution solution = new Solution(problem);
-        int solutionLength = ((Permutation) solution.getDecisionVariables()[0]).vector_.length;
+        PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
+        int solutionLength = problem.getPermutationLength();
         for (int i = 0; i < solutionLength; i++) {
-            ((Permutation) solution.getDecisionVariables()[0]).vector_[i] = i;
+            solution.getVariableValue(i).intValue();
+            //((Permutation) solution.getDecisionVariables()[0]).vector_[i] = i;
         }
 
         long start = System.currentTimeMillis();
@@ -43,10 +44,11 @@ public class Evaluations_2CriterionTest {
     @Test
     public void testMultiObjectiveProblem() throws ClassNotFoundException {
         MultiObjectiveGeneralizedPrioritizationProblem problem = new MultiObjectiveGeneralizedPrioritizationProblem(list, "io/test/grep/cost_array.csv", "io/test/grep/fault_matrix.csv");
-        Solution solution = new Solution(problem);
-        int solutionLength = ((Permutation) solution.getDecisionVariables()[0]).vector_.length;
+        PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
+        int solutionLength = problem.getPermutationLength();
         for (int i = 0; i < solutionLength; i++) {
-            ((Permutation) solution.getDecisionVariables()[0]).vector_[i] = i;
+            solution.getVariableValue(i).intValue();
+            //((Permutation) solution.getDecisionVariables()[0]).vector_[i] = i;
         }
 
         long start = System.currentTimeMillis();
