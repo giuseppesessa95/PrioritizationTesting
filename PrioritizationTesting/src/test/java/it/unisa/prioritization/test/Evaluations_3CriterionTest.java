@@ -4,7 +4,6 @@ import it.unisa.prioritization.problems.MultiObjectiveGeneralizedPrioritizationP
 import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
 import java.util.ArrayList;
 import java.util.List;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.PermutationSolution;
 import org.junit.Before;
 import org.junit.Test;
