@@ -18,7 +18,7 @@ public class GeneralizedPrioritizationProblem_2CriteriaTest{
 		List<String> list = new ArrayList<>();
 		list.add("io/test/coverage.csv");
 		list.add("io/test/coverage2.csv");
-		problem  = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/cost.csv", "io/test/new_faults.csv");
+		problem  = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/cost.csv", "io/test/new_faults.csv", false);
 	}
 	
 	@Test

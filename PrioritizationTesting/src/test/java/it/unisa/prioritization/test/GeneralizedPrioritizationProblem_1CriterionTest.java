@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
@@ -18,7 +17,7 @@ public class GeneralizedPrioritizationProblem_1CriterionTest{
 	public void initialize(){
 		List<String> list = new ArrayList<>();
 		list.add("io/test/coverage.csv");
-		problem  = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/cost.csv", "io/test/new_faults.csv");
+		problem  = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/cost.csv", "io/test/new_faults.csv", false);
 	}
 
 	@Test

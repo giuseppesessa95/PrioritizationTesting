@@ -18,9 +18,6 @@ public abstract class GeneralizedPrioritizationProblem implements PermutationPro
     public List<CoverageMatrix> coverageCriteria = new ArrayList<>();
     public ExecutionCostVector costCriterion;
     public CoverageMatrix faultMatrix;
-    private final String problemName_;
-    final int numberOfVariables_;
-    private final int numberOfConstraints_;
 
     /**
      * Public constructor
@@ -29,12 +26,9 @@ public abstract class GeneralizedPrioritizationProblem implements PermutationPro
      * coverage matrices
      * @param costFilename file containing the execution cost info
      * @param faultFilename file containing the fault coverage matrix
+     * @param compacted
      */
-    public GeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename) {
-        problemName_ = "GeneralizedPrioritizationProblem";
-        numberOfVariables_ = 1;
-        numberOfConstraints_ = 0;
-
+    public GeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename, boolean compacted) {
         // load all coverage matrices
         for (String filename : coverageFilenames) {
             CoverageMatrix cov;
@@ -48,13 +42,13 @@ public abstract class GeneralizedPrioritizationProblem implements PermutationPro
         System.out.println("Read " + costCriterion.size() + " elements from the cost array.");
 
         // past fault matrix must not be compacted beacuse it is used for computing APFDc
-        faultMatrix = new CoverageMatrix(faultFilename, false);
+        faultMatrix = new CoverageMatrix(faultFilename, compacted);
         System.out.println("Read " + faultMatrix.getSize() + " elements from the coverage matrix '" + faultFilename + "'");
     }
 
     @Override
     public int getPermutationLength() {
-        return coverageCriteria.size();
+        return this.costCriterion.size();
     }
 
 }

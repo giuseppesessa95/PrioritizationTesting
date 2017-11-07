@@ -15,8 +15,8 @@ import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
  */
 public class SingleObjectiveGeneralizedPrioritizationProblem extends GeneralizedPrioritizationProblem {
 
-    public SingleObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename) {
-        super(coverageFilenames, costFilename, faultFilename);
+    public SingleObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename, boolean compacted) {
+        super(coverageFilenames, costFilename, faultFilename, compacted);
     }
 
     private static final long serialVersionUID = 1L;
@@ -28,12 +28,6 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
      */
     @Override
     public void evaluate(PermutationSolution<Integer> solution) {
-
-        String solutionString = solution.getVariableValueString(0);
-        int[] solutionArray = new int[solutionString.length()];
-        for (int i = 0; i < solutionString.length(); i++) {
-            solutionArray[i] = solutionString.charAt(i);
-        }
         // let's create cumulative coverage analyzers (one analyzer for each coverage matrix)
         List<CumulativeCoverage> objectives = new ArrayList<>();
         for (int i = 0; i < this.coverageCriteria.size(); i++) {
@@ -47,14 +41,14 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
             coverages.add(i, 0.0);
         }
         double hyperVolume = 0;
-        for (int i = 0; i < solutionArray.length; i++) {
+        for (int i = 0; i < solution.getNumberOfVariables(); i++) {
             double previousCost = cost;
 
-            cost = cost + costCriterion.getCostOfTest(solutionArray[i]);
+            cost = cost + costCriterion.getCostOfTest(solution.getVariableValue(i));
 
             // let's update the cumulative coverage scores
             for (int index = 0; index < this.coverageCriteria.size(); index++) {
-                double cumulativeCoverage = objectives.get(index).updateCoverage(solutionArray[i]);
+                double cumulativeCoverage = objectives.get(index).updateCoverage(solution.getVariableValue(i));
                 coverages.set(index, cumulativeCoverage);
             }
 
@@ -92,7 +86,7 @@ public class SingleObjectiveGeneralizedPrioritizationProblem extends Generalized
 
     @Override
     public int getNumberOfVariables() {
-        return 1;
+        return this.costCriterion.size();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class APFDcTest4 {
     public void initialize() {
         List<String> list = new ArrayList<>();
         list.add("io/test/APFDc/printtokens_test/coverage_matrix_b");
-        problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/APFDc/printtokens_test/cost_array", "io/test/APFDc/printtokens_test/fault_matrix");
+        problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/APFDc/printtokens_test/cost_array", "io/test/APFDc/printtokens_test/fault_matrix", false);
     }
 
     @Test

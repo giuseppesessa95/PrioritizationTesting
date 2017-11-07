@@ -1,7 +1,6 @@
 package it.unisa.prioritization.criterion;
 
 import org.uma.jmetal.solution.PermutationSolution;
-import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
 /**
  *

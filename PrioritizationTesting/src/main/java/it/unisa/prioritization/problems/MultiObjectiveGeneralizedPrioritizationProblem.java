@@ -21,13 +21,13 @@ public class MultiObjectiveGeneralizedPrioritizationProblem extends GeneralizedP
      * @param costFilename file containing the execution cost info
      * @param faultFilename file containing the fault coverage matrix
      */
-    public MultiObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename) {
-        super(coverageFilenames, costFilename, faultFilename);
+    public MultiObjectiveGeneralizedPrioritizationProblem(List<String> coverageFilenames, String costFilename, String faultFilename, boolean compacted) {
+        super(coverageFilenames, costFilename, faultFilename, compacted);
     }
 
     @Override
     public int getNumberOfVariables() {
-        return 1;
+        return this.costCriterion.size();
     }
 
     @Override

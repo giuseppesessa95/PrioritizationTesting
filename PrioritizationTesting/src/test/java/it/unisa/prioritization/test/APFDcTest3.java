@@ -3,7 +3,6 @@ package it.unisa.prioritization.test;
 import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
 import java.util.ArrayList;
 import java.util.List;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.PermutationSolution;
 import it.unisa.prioritization.criterion.GeneralizedAveragePercentage;
 import static junit.framework.Assert.assertEquals;
@@ -23,7 +22,7 @@ public class APFDcTest3 {
     public void initialize() {
         List<String> list = new ArrayList<>();
         list.add("io/test/APFDc/coverage.csv");
-        problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/APFDc/cost.csv", "io/test/APFDc/one_fault.csv");
+        problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/APFDc/cost.csv", "io/test/APFDc/one_fault.csv", false);
 
     }
 

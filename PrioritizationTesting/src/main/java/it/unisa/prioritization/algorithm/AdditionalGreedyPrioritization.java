@@ -1,56 +1,53 @@
 package it.unisa.prioritization.algorithm;
 
-import com.sun.org.apache.xml.internal.security.algorithms.Algorithm;
 import it.unisa.prioritization.criterion.CumulativeCoverage;
+import it.unisa.prioritization.problems.GeneralizedPrioritizationProblem;
 import it.unisa.prioritization.problems.SingleObjectiveGeneralizedPrioritizationProblem;
 import java.util.ArrayList;
 import java.util.List;
-import javax.management.JMException;
-import org.uma.jmetal.problem.Problem;
-import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.solution.SolutionBuilder.Variable;
+import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.solution.PermutationSolution;
+import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
-public class AdditionalGreedyPrioritization extends Algorithm {
+public class AdditionalGreedyPrioritization implements Algorithm {
 
     private static final long serialVersionUID = 1L;
 
-    private final SingleObjectiveGeneralizedPrioritizationProblem realProblem;
+    private final GeneralizedPrioritizationProblem problem;
     private List<CumulativeCoverage> cumulativeCoverages;
     private List<Integer> coverages;
     private final int length;
     private final int numberOfCoverageCriterion;
     private List<Integer> usedValues;
+    private PermutationSolution<Integer> solution;
 
-    public AdditionalGreedyPrioritization(Problem problem) {
-        super(problem);
-        this.realProblem = (SingleObjectiveGeneralizedPrioritizationProblem) this.problem_;
-        this.length = realProblem.costCriterion.size();
-        this.numberOfCoverageCriterion = realProblem.coverageCriteria.size();
+    public AdditionalGreedyPrioritization(GeneralizedPrioritizationProblem problem) {
+        this.problem = problem;
+        this.length = problem.costCriterion.size();
+        this.numberOfCoverageCriterion = problem.coverageCriteria.size();
     }
 
-    public SolutionSet execute() throws JMException, ClassNotFoundException {
-        NonDominatedSolutionList ndl = new NonDominatedSolutionList();
-
+    @Override
+    public void run() {
         this.cumulativeCoverages = new ArrayList<>();
         this.coverages = new ArrayList<>();
         this.usedValues = new ArrayList<>();
 
         for (int i = 0; i < this.numberOfCoverageCriterion; i++) {
-            this.cumulativeCoverages.add(new CumulativeCoverage(this.realProblem.coverageCriteria.get(i)));
+            this.cumulativeCoverages.add(new CumulativeCoverage(this.problem.coverageCriteria.get(i)));
         }
 
         for (int i = 0; i < this.numberOfCoverageCriterion; i++) {
             this.coverages.add(i, 0);
         }
 
-        Permutation variable = new Permutation();
-        variable.vector_ = new int[this.length];
+        this.solution = new DefaultIntegerPermutationSolution(problem);
 
         int step = 0;
 
         while (step < this.length) {
             boolean isMaximum = true;
-            variable.vector_[step] = this.getGreedyStep(variable, step, this.coverages);
+            this.solution.setVariableValue(step, this.getGreedyStep(this.solution, step, this.coverages));
             System.out.println("Greedy algorithm step: " + (step));
             step++;
 
@@ -61,24 +58,20 @@ public class AdditionalGreedyPrioritization extends Algorithm {
             if (isMaximum) {
                 System.out.println("Rebooting at step:" + step);
                 for (int i = 0; i < this.numberOfCoverageCriterion; i++) {
-                    this.cumulativeCoverages.set(i, new CumulativeCoverage(this.realProblem.coverageCriteria.get(i)));
+                    this.cumulativeCoverages.set(i, new CumulativeCoverage(this.problem.coverageCriteria.get(i)));
                     this.coverages.set(i, 0);
                 }
             }
         }
-        Variable[] variables = new Variable[1];
-        variables[0] = variable;
-        ndl.add(new Solution(problem_, variables));
-        return ndl;
     }
 
-    private int getGreedyStep(Permutation variable, int step, List<Integer> previousCoverages) {
+    private int getGreedyStep(PermutationSolution solution, int step, List<Integer> previousCoverages) {
         double maxim = 0;
         int bestStep = 0;
 
         for (int i = 0; i < length; i++) {
             if (!usedValues.contains(i)) {
-                variable.vector_[step] = i;
+                solution.setVariableValue(step, i);
                 List<CumulativeCoverage> tmpObjectives = new ArrayList<>();
                 for (int j = 0; j < this.numberOfCoverageCriterion; j++) {
                     tmpObjectives.add(this.cumulativeCoverages.get(j).copy());
@@ -86,7 +79,7 @@ public class AdditionalGreedyPrioritization extends Algorithm {
                 List<Integer> tmpCoverages = new ArrayList<>();
 
                 // let's update the cumulative coverage scores
-                for (int index = 0; index < this.realProblem.coverageCriteria.size(); index++) {
+                for (int index = 0; index < this.problem.coverageCriteria.size(); index++) {
                     int cumulativeCoverage = tmpObjectives.get(index).updateCoverage(i);
                     tmpCoverages.add(cumulativeCoverage);
                 }
@@ -95,7 +88,7 @@ public class AdditionalGreedyPrioritization extends Algorithm {
                 for (int j = 0; j < this.numberOfCoverageCriterion; j++) {
                     greedy += Math.abs(tmpCoverages.get(j) - previousCoverages.get(j));
                 }
-                greedy = greedy / this.realProblem.costCriterion.getCostOfTest(step);
+                greedy = greedy / this.problem.costCriterion.getCostOfTest(step);
 
                 if (greedy > maxim || maxim == 0) {
                     maxim = greedy;
@@ -110,5 +103,20 @@ public class AdditionalGreedyPrioritization extends Algorithm {
         }
         this.usedValues.add(bestStep);
         return bestStep;
+    }
+
+    @Override
+    public PermutationSolution getResult() {
+        return this.solution;
+    }
+
+    @Override
+    public String getName() {
+        return "AdditionalGreedyPrioritization";
+    }
+
+    @Override
+    public String getDescription() {
+        return "This is the implementation of the test case prioritization greedy algorithm"; 
     }
 }

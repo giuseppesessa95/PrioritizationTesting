@@ -26,7 +26,7 @@ public class Evaluations_3CriterionTest {
 
     @Test
     public void testSingleObjectiveProblem() throws ClassNotFoundException {
-        SingleObjectiveGeneralizedPrioritizationProblem problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/grep/cost_array.csv", "io/test/grep/fault_matrix.csv");
+        SingleObjectiveGeneralizedPrioritizationProblem problem = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/grep/cost_array.csv", "io/test/grep/fault_matrix.csv", false);
         PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
         int solutionLength = problem.getPermutationLength();
         for (int i = 0; i < solutionLength; i++) {
@@ -43,7 +43,7 @@ public class Evaluations_3CriterionTest {
     
     @Test
     public void testMultiObjectiveProblem() throws ClassNotFoundException {
-        MultiObjectiveGeneralizedPrioritizationProblem problem = new MultiObjectiveGeneralizedPrioritizationProblem(list, "io/test/grep/cost_array.csv", "io/test/grep/fault_matrix.csv");
+        MultiObjectiveGeneralizedPrioritizationProblem problem = new MultiObjectiveGeneralizedPrioritizationProblem(list, "io/test/grep/cost_array.csv", "io/test/grep/fault_matrix.csv", false);
         PermutationSolution<Integer> solution = new DefaultIntegerPermutationSolution(problem);
         int solutionLength = problem.getPermutationLength();
         for (int i = 0; i < solutionLength; i++) {

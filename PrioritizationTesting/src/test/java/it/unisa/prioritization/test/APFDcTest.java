@@ -23,7 +23,7 @@ public class APFDcTest {
 	public void initialize(){
             List<String> list = new ArrayList<>();
             list.add("io/test/APFDc/coverage.csv");
-            problem  = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/APFDc/cost.csv", "io/test/APFDc/faults.csv");
+            problem  = new SingleObjectiveGeneralizedPrioritizationProblem(list, "io/test/APFDc/cost.csv", "io/test/APFDc/faults.csv", false);
 	
         }
 
